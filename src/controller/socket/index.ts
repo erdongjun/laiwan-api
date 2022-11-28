@@ -1,5 +1,5 @@
 import { Server } from 'socket.io'
-import { GAME_TYPE } from '../../config/game-config'
+import { GAME_TYPE } from '../../config/game'
 
 const ROOM = 'game'
 // 冠军id

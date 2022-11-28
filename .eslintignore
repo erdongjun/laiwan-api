@@ -1,0 +1,8 @@
+# Ignore built files except build/index.js
+build
+dist
+dll
+logs
+public
+tasks
+test

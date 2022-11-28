@@ -1,12 +1,11 @@
+
 import Router from '@koa/router'
-import { Context } from 'koa'
 const router = new Router()
 
-router.get('/', async(ctx: Context) => {
-  await ctx.render('index', {
-    title: '直播间'
-  })
-})
+import adminRouter from './admin'
+import apiRouter from './api'
 
+router.use('/admin',adminRouter.routes(),adminRouter.allowedMethods())
+router.use('/api',apiRouter.routes(),apiRouter.allowedMethods())
 
 export default router

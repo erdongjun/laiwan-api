@@ -92,3 +92,10 @@ export const GAME_TYPE: GameTypes = {
     text: '加入游戏',
   },
 }
+
+
+export default {
+  // 端口号
+  port: 7000,
+  GAME_TYPE,
+}
