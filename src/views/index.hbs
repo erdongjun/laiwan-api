@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{{title}}</title>
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    body {
+      position: relative;
+    }
+
+   
+
+    .rank-body-bottom {
+      width: 300px;
+      padding: 10px;
+    }
+
+    select,
+    Button {
+      width: 50px;
+      height: 30px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input {
+      width: 150px;
+      height: 30px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding-left: 5px;
+    }
+    .action-btn{
+      margin: 10px;
+    }
+    .msg{
+      display: none;
+    }
+    .tip{
+      width: 250px;
+    }
+  </style>
+  <script src="https://web.bldimg.com/cblued/static/jquery.min.1gd5gvj5v1ngfvk.js"></script>
+  <script src="https://web.bldimg.com/cblued/static/socket.io.min.1gd5gvj5d1sk4uf.js"></script>
+</head>
+
+<body>
+  <div class="rank-body-bottom">
+    <div class="name">
+      <input id="select" maxlength="12" placeholder="请输入昵称" />
+      <Button id="name-btn">确认</Button>
+    </div>
+    <div class="msg">
+      <p>昵称： <span class="nickName"></span></p>
+      <input id="text" placeholder="请输入消息内容" />
+      <Button id="btn">发送</Button>
+      <div class="tip">
+        <p>提示：文字动作</p>
+       
+      </div>
+    </div>
+  </div>
+  <script>
+    var socket=null
+    var socketId = null
+    function init(name){
+      // 创建websocket通信，触发相应的动作。
+      {{!-- socket = io('http://localhost:7000', {
+        path: '/socket/game'
+      }) --}}
+
+      socket = io('http://localhost:8803', {
+        path: '/admin-api/socket/msg'
+      })
+      // ws链接成功
+      socket.on('connect', () => {
+        console.log('connect', socket.id);
+        socketId = socket.id
+        socket.emit('login', { socketId,name,type: 3007, text: '加入游戏'});
+      });
+      // 断开链接
+      socket.on('disconnect', reason => {
+        console.log('disconnect', reason); // undefined
+      });
+       socket.on('msg', reason => {
+        console.log('msg', reason); // undefined
+      });
+      // 异常重试
+      socket.on('connect_error', () => {
+        setTimeout(() => {
+          socket.connect();
+        }, 5000);
+      });
+    }
+
+  </script>
+  <script>
+
+    var ACTIONS  = {
+      '左转': 2001,
+      '上': 2003,
+      '右转': 2002,
+      '左': 2005,
+      '下': 2004,
+      '右': 2006,
+    }
+    if(location.hash === '#root') {
+      ACTIONS = {
+        '开始': 1001,
+        '退出': 1003,
+        '重开': 1004,
+        ...ACTIONS,
+        '回退': 1005,
+      }
+    }
+
+    var el = ''
+    Object.keys(ACTIONS).forEach(key => {
+      el+= '<Button class="action-btn">'+ key +'</Button>'
+    })
+
+    $('.tip').append(el)
+    $('#name-btn').click(() => {
+      const name = $('#select').val().replace(/ +/g, '')
+      if (!name) {
+        window.alert('请输入昵称')
+        return false
+      }
+      $('.nickName').text(name)
+      $('.name').hide()
+      $('.msg').show()
+      init(name)
+    })
+    $('#btn').click(() => {
+      const text = $('#text').val().replace(/ +/g, '')
+      const name = $('#select').val().replace(/ +/g, '')
+      if (!text || !name) {
+        window.alert('请输入消息')
+        return false
+      }
+      const type = ACTIONS[text] || 0
+      socket.emit('data', { type, text, name, socketId });
+      $('#text').val('')
+    })
+  let canClick = true
+    $('.tip').on('click','.action-btn', function() {
+      if (!canClick) {
+        return false
+      }
+      canClick = false
+      setTimeout(function () {
+        canClick = true
+      }, 1000)
+        const text = $(this).text()
+        const name = $('#select').val().replace(/ +/g, '')
+        console.log({ text,el: $(this).html() })
+
+        if (!text || !name) {
+          window.alert('请输入消息')
+          return false
+        }
+        const type = ACTIONS[text] || 0
+        socket.emit('data', { type, text, name, socketId });
+      })
+  </script>
+</body>
+
+</html>
