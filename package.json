@@ -7,7 +7,7 @@
     "resetFolder": "rimraf dist/*",
     "compile": "tsc",
     "build": "npm-run-all resetFolder compile",
-    "eslint": "eslint --cache --ext .ts,.js . --fix",
+    "eslint": "eslint --cache --ext .ts . --fix",
     "start": "node ."
   },
   "author": "erdongjun<https://github.com/erdongjun>",
@@ -23,7 +23,7 @@
     "@typescript-eslint/eslint-plugin": "5.37.0",
     "@typescript-eslint/parser": "5.37.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^8.23.1",
+    "eslint": "^6.8.0",
     "eslint-config-prettier": "8.5.0",
     "npm-run-all": "4.1.5",
     "prettier": "2.7.1",

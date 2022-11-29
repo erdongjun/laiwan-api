@@ -4,8 +4,12 @@
     "commonjs": true,
     "node": true
   },
+    "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 8,
+    "parser": "babel-eslint",
     "sourceType": "module"
+  },
+  "rules": {
   }
 }

@@ -2,7 +2,7 @@ import path from 'path'
 
 export default {
   // 端口号
-  port: 7000,
+  port: 7700,
   staticPath: path.resolve(__dirname, '../../public'),
   // mysql
   mysql: {

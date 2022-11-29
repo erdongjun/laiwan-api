@@ -1,18 +1,18 @@
-import path from 'path'
-import { Sequelize } from 'sequelize-typescript'
+import path from 'path';
+import { Sequelize } from 'sequelize-typescript';
 
-import { config } from '../config'
-const { mysql } = config
+import { config } from '../config';
 
-const poolList: { [key: string]: Sequelize } = {}
+const { mysql } = config;
+
+const poolList: { [key: string]: Sequelize } = {};
 
 const mapModel = (key: string) => {
   if (poolList[key]) {
-    return poolList[key]
+    return poolList[key];
   }
 
-  const modelPaths = [path.resolve(__dirname, `../models/${key}`)]
-  console.log({modelPaths})
+  const modelPaths = [path.resolve(__dirname, `../models/${key}`)];
   const sequelize = new Sequelize(mysql.database, mysql.username, mysql.password, {
     dialect: 'mysql',
     host: mysql.host,
@@ -34,11 +34,11 @@ const mapModel = (key: string) => {
     },
     timezone: '+08:00',
     logging: console.log,
-  })
+  });
 
-  poolList[key] = sequelize
+  poolList[key] = sequelize;
 
-  return sequelize
-}
+  return sequelize;
+};
 
-export default (key: string) => mapModel(key)
+export default (key: string) => mapModel(key);

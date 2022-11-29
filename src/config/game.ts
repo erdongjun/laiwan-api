@@ -1,13 +1,5 @@
 
-type GameTypes = {
-  [key: number|string]: {
-    type: number
-    text: string
-    actionType?: string
-  }
-}
-
-export const GAME_TYPE: GameTypes = {
+export const GAME_TYPE: any = {
   // 100x 游戏状态
   // 200x 游戏动作
   // 300x 榜单动作

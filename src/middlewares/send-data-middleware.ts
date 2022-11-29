@@ -1,24 +1,8 @@
 import { Context, Next } from 'koa'
 import { errorCodeMap } from '../config'
 
-declare module 'koa' {
-  interface Context {
-    send(options: ResponseData): void
-  }
-}
-
-export interface ResponseData {
-  [key: string]: any
-  data?: any
-  code?: number
-  message?: string
-  success?: boolean
-  errorCode?: number
-  extra?: any
-}
-
 export default async (ctx: Context, next: Next) => {
-  ctx.send = (options: ResponseData) => {
+  ctx.send = (options: any) => {
     const { code = 200, message, data = {}, errorCode = 0, success = false, extra } = options
     const result = {
       data,
